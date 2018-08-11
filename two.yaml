@@ -1,0 +1,29 @@
+--- #httpd installation
+ - hosts: node2.chennai.com
+   remote_user: ansible
+   become: yes
+   tasks:
+    - name: Installing Apache Service
+      yum:
+        name: httpd
+        state: latest
+    - name: Restarting Apache Service
+      service: 
+        name: httpd
+        state: restarted
+    - name: creating index.html
+      file:
+        state: touch
+        dest: /var/www/html/index.html
+    - name: Copy Contents in index.html
+      copy:
+        content: welcome to website
+        dest: /var/www/html/index.html
+    - name: Enable Firewall for httpd Service
+      firewalld:
+        port: 80/tcp
+        state: enabled
+    - name: 
+      service:
+        name: firewalld
+        state: restarted 
